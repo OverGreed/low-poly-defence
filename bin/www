@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+'use strict';
+const http = require('http'),
+    app = require('../server/app'),
+    logger = require('../server/libs/logger');
+
+const port = parseInt(process.env.PORT || '8086');
+const server = http.createServer(app);
+
+server.listen(port, () => {
+    app.set('port', port);
+});
+
+server.on('error', (e) => {
+    if(e.syscall !== 'listen') {
+        throw e;
+    }
+
+    switch(e.code) {
+        case 'EACCES':
+            logger.error(`${port} requires elevated privileges.`);
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            logger.error(`${port} is already in use.`);
+            process.exit(1);
+            break;
+        default:
+            throw e;
+    }
+});
+
+server.on('listening', () => {
+    logger.info(`Starting application on port ${port}.`);
+});

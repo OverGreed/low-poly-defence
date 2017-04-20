@@ -1,0 +1,42 @@
+{
+  "name": "low-poly-defence",
+  "version": "1.0.0",
+  "description": "Low Poly Tower Defance game",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "node bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Serhii Kuzmynskyi",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^2.0.0-beta.5",
+    "gl-mat3": "^1.0.0",
+    "gl-mat4": "^1.1.4",
+    "gl-vec2": "^1.0.0",
+    "gl-vec3": "^1.0.3",
+    "gl-vec4": "^1.0.1",
+    "less": "^2.7.2",
+    "less-loader": "^2.2.3",
+    "raw": "^0.1.4",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.1",
+    "webgl-core": "file:///Users/greed/projects/webgl-core",
+    "webpack": "^2.2.0",
+    "webpack-uglify-harmony": "^1.0.0"
+  },
+  "dependencies": {
+    "compression": "^1.6.2",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "serve-static": "^1.11.2",
+    "winston": "^2.3.1"
+  }
+}
