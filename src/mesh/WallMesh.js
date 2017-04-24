@@ -1,7 +1,7 @@
 import {Mesh} from 'webgl-core/engine/object/mesh';
 import {SeparateGeometry} from 'webgl-core/engine/geometry/SeparateGeometry';
 import {Texture} from 'webgl-core/engine/material/texture/Texture';
-import GeneralMaterial from '../material/GeneralMaterial';
+import InstanceMaterial from '../material/InstanceMaterial';
 import {prepareData} from 'webgl-core/engine/helpers/geometry';
 
 import wallA from './data/platform/wall-a.json';
@@ -46,13 +46,14 @@ export default class WallMesh extends Mesh {
 
     static getMaterial(context) {
         if(!__material) {
-            __material = new GeneralMaterial(context, {
+            __material = new InstanceMaterial(context, {
                 textures: {
-                    diffuse: new Texture(context, { flipY: 1, anisotropy: 4 }).load('textures/platform/diffuse.png'),
-                    normal: new Texture(context, { flipY: 1, anisotropy: 4 }).load('textures/platform/normal-t.png'),
-                    emit: new Texture(context, { flipY: 1, anisotropy: 4 }).load('textures/platform/emit.png')
+                    diffuse: new Texture(context, { flipY: 1, anisotropy: 16 }).load('textures/platform/diffuse.png'),
+                    normal: new Texture(context, { flipY: 1, anisotropy: 16 }).load('textures/platform/normal.png'),
+                    emit: new Texture(context, { flipY: 1, anisotropy: 16 }).load('textures/platform/emit.png')
                 }
-            })
+            });
+            window.m = __material;
         }
         return __material;
     }

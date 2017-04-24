@@ -1,6 +1,7 @@
 import ui from './scene/ui';
 import game from './scene/game';
 import renderer from './renderer';
+import context from './context';
 
 let _prev = 0;
 const loop = (time = 0) => {
@@ -8,7 +9,7 @@ const loop = (time = 0) => {
 
     game.tick(diff);
     ui.tick(diff);
-
+    context.rc = 0;
     renderer
         .clear()
         .render(game)

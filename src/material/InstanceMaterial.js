@@ -8,12 +8,17 @@ const program = {
         fragment:[
             'MAX_LIGHT 20',
             'MAX_SHADOW 5'
+        ],
+        vertex: [
+            'USE_INSTANCE'
         ]
     },
     attributes: [
         {name: 'vertex', type: 'vec3'},
         {name: 'normal', type: 'vec3'},
-        {name: 'uv', type: 'vec2'}
+        {name: 'uv', type: 'vec2'},
+        {name: 'IMMatrix', type: 'mat4'},
+        {name: 'INMatrix', type: 'mat3'}
     ],
     uniforms: [
         {name: 'VPMatrix', type: 'mat4', source: Uniform.scene('camera', 'final'), fragment: false},
@@ -59,7 +64,7 @@ const program = {
         }
     }
 };
-export default class GeneralMaterial extends Material {
+export default class InstanceMaterial extends Material {
     constructor(context, {
         shininess = 50,
         normal = 1.0,

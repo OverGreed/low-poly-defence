@@ -28,15 +28,15 @@ export default class LampMesh extends Mesh {
         type = LAMP_A,
         light = {
             power: 1,
-            distance: 3,
+            distance: 6,
             color: vec3(0.5882, 0.93333, 1.0)
         },
         ...options
     } = {}) {
         super({
             shadow: {
-                drop: false,
-                receive: false
+                drop: true,
+                receive: true
             },
             ...options,
             geometry: LampMesh.getGeometry(context, type),
@@ -45,7 +45,6 @@ export default class LampMesh extends Mesh {
         this.light = new PointLight(context, light);
         this.type = type;
         this.light.active = this.active;
-        window.light = this.light;
     }
 
     get active() {

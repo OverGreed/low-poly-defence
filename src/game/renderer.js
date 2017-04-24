@@ -47,8 +47,10 @@ const renderer = new Renderer(context, {
         let end1 = performance.now();
         document.getElementById('debug').innerHTML = `
             Depth Plugin Time: ${(end - start).toFixed(4)}<br>
-            Display Plugin Time: ${(end1 - end).toFixed(4)}
+            Display Plugin Time: ${(end1 - end).toFixed(4)}<br>
+            Render Calls: ${context.rc}
         `;
+
     }
 });
 

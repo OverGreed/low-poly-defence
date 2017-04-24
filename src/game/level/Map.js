@@ -1,4 +1,5 @@
 import {Container} from 'webgl-core/engine/object/mesh/Container';
+import {Instance} from 'webgl-core/engine/object/mesh/Instance';
 
 export default class Map {
     constructor(context, scene, options) {
@@ -13,22 +14,43 @@ export default class Map {
      * @param {Array<Object>} data
      */
     load(data = []) {
-        console.log(data.length)
+        const struct = {};
         for(let item of data) {
-            this.add(item);
+            const {entity, type, ...options} = item;
+            const hash = entity + type;
+            if(!struct[hash]){
+                struct[hash] = {
+                    entity,
+                    type,
+                    instances: []
+                };
+            }
+            struct[hash].instances.push({type, ...options});
         }
+
+        Object.keys(struct).forEach((key)=> {
+            const {entity, type, instances} = struct[key];
+            if(entity === 'lamp') {
+                instances.forEach((instance) => {
+                    const mesh = new this.options[entity](this._context, {
+                        type,
+                        ...instance
+                    });
+                    if(mesh.light) {
+                        this._scene.lights.push(mesh.light);
+                    }
+                    this.container.children.add(mesh);
+                });
+            } else {
+                const mesh = new this.options[entity](this._context, {
+                    type,
+                    instance: new Instance(this._context, {
+                        data: instances
+                    })
+                });
+                this.container.children.add(mesh);
+            }
+        });
     }
 
-    add(item) {
-        const {entity, ...options} = item;
-        const mesh = new this.options[entity](this._context, options);
-        this.container.children.add(mesh);
-        if(mesh.light) {
-            this._scene.lights.push(mesh.light)
-        }
-    }
-
-    remove(mesh) {
-
-    }
 }

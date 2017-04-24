@@ -1,12 +1,15 @@
 import {Mesh} from 'webgl-core/engine/object/mesh';
 import {SeparateGeometry} from 'webgl-core/engine/geometry/SeparateGeometry';
-import LampMesh from './LampMesh';
+
+import InstanceMaterial from '../material/InstanceMaterial';
+import {Texture} from 'webgl-core/engine/material/texture/Texture';
 import {prepareData} from 'webgl-core/engine/helpers/geometry';
 
 import crateA from './data/asset/create-a.json';
 import crateB from './data/asset/create-b.json';
 
-let __geometry = {};
+let __geometry = {},
+    __material;
 
 export const CRATE_A = 'A';
 export const CRATE_B = 'B';
@@ -28,7 +31,7 @@ export default class CrateMesh extends Mesh {
             },
             ...options,
             geometry: CrateMesh.getGeometry(context, type),
-            material: LampMesh.getMaterial(context)
+            material: CrateMesh.getMaterial(context)
         });
     }
 
@@ -47,4 +50,18 @@ export default class CrateMesh extends Mesh {
         }
         return __geometry[type];
     }
+
+    static getMaterial(context) {
+        if(!__material) {
+            __material = new InstanceMaterial(context, {
+                textures: {
+                    diffuse: new Texture(context, { flipY: 1 }).load('textures/asset/diffuse.png'),
+                    emit: new Texture(context, { flipY: 1 }).load('textures/asset/emit.png'),
+                    normal: new Texture(context, { flipY: 1 }).load('textures/asset/normal.png')
+                }
+            })
+        }
+        return __material;
+    }
+
 }
