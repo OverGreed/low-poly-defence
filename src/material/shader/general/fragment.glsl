@@ -107,41 +107,12 @@ vec3 perturbNormal2Arb( vec3 eye_pos, vec3 surf_norm, vec2 uv ) {
     return normalize( tsn * mapN );
 }
 
-mat3 cotangent_frame(vec3 N, vec3 p, vec2 uv)
-{
-    // get edge vectors of the pixel triangle
-    vec3 dp1 = dFdx( p );
-    vec3 dp2 = dFdy( p );
-    vec2 duv1 = dFdx( uv );
-    vec2 duv2 = dFdy( uv );
-
-    // solve the linear system
-    vec3 dp2perp = cross( dp2, N );
-    vec3 dp1perp = cross( N, dp1 );
-    vec3 T = normalize(dp2perp * duv1.x + dp1perp * duv2.x);
-    vec3 B = normalize(dp2perp * duv1.y + dp1perp * duv2.y);
-
-    // construct a scale-invariant frame
-    float invmax = inversesqrt( max( dot(T,T), dot(B,B) ) );
-    return mat3( normalize(T) * invmax, B * invmax, N );
-}
-
-vec3 perturb_normal( vec3 N, vec3 V, vec2 texcoord ) {
-    // assume N, the interpolated vertex normal and
-    // V, the view vector (vertex to eye)
-    vec3 map = texture2D(normalMap, texcoord ).xyz;
-    map = map  * 2.0 - 1.0;
-    map.xy = normalScale * map.xy;
-    mat3 TBN = cotangent_frame(N, -V, texcoord);
-    return normalize(TBN * map);
-}
-
 void main(void) {
     vec4 emit = texture2D(emissiveMap, vUv);
 
     vec4 texture = texture2D(diffuseMap, vUv);
     vec3 position = vec3(vPosition);
-    vec3 normal = perturbNormal2Arb(vPosition.xyz, vNormal, vUv); // perturb_normal(normalize(vNormal), -normalize(vec3(vPosition)), vUv);//
+    vec3 normal = perturbNormal2Arb(vPosition.xyz, vNormal, vUv);
 
     vec3 viewDir = -normalize(camera - position);
 
@@ -175,5 +146,4 @@ void main(void) {
     }
 
     gl_FragColor = vec4((texture.rgb * power) + emit.rgb * emit.a, texture.a * opacity);
-    //gl_FragColor = vec4(normal, 1.0);
 }

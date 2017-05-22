@@ -2,8 +2,38 @@ const {resolve} = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('webpack-uglify-harmony');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const path =  resolve(__dirname, 'public/build');
+const plugins = [];
+const isProd = process.env.NODE_ENV === 'production';
+if(isProd) {
+    plugins.push(new UglifyJsPlugin({
+        compress: {
+            warnings: false,
+            screw_ie8: true,
+            conditionals: true,
+            unused: true,
+            comparisons: true,
+            sequences: true,
+            dead_code: true,
+            evaluate: true,
+            if_return: true,
+            join_vars: true,
+        },
+        output: {
+            comments: false
+        },
+        sourceMap: false,
+    }))
+}
+
+plugins.push(new webpack.LoaderOptionsPlugin());
+plugins.push(new ExtractTextPlugin('/app.bundle.css'));
+
+//if(!isProd) {
+    plugins.push(new BundleAnalyzerPlugin());
+//}
 
 module.exports = {
     entry: {
@@ -31,28 +61,5 @@ module.exports = {
             exclude: /node_modules\/(?!(webgl-core)\/)/
         }]
     },
-    plugins: [
-        /*
-         new UglifyJsPlugin({
-            compress: {
-                warnings: false,
-                screw_ie8: true,
-                conditionals: true,
-                unused: true,
-                comparisons: true,
-                sequences: true,
-                dead_code: true,
-                evaluate: true,
-                if_return: true,
-                join_vars: true,
-            },
-            output: {
-                comments: false
-            },
-            sourceMap: false,
-         }),
-         */
-        new webpack.LoaderOptionsPlugin(),
-        new ExtractTextPlugin('/app.bundle.css')
-    ],
+    plugins: plugins
 };

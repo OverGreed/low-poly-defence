@@ -2,7 +2,7 @@ import vec3 from 'gl-vec3/fromValues';
 import {Mesh} from 'webgl-core/engine/object/mesh';
 import {GlyphGeometry} from 'webgl-core/engine/geometry/GlyphGeometry';
 import {Texture} from 'webgl-core/engine/material/texture/Texture';
-import TextMaterial from '../material/TextMaterial';
+import UiMaterial from '../material/UiMaterial';
 import {glyph} from '../material/text/glyph';
 
 let __diffuse = null;
@@ -23,7 +23,7 @@ export default class TextMesh extends Mesh {
                 text: text,
                 glyph: glyph
             }),
-            material: new TextMaterial(context, {
+            material: new UiMaterial(context, {
                 face: context.gl.BACK,
                 textures: {
                     diffuse: TextMesh.getDiffuseGlyph(context)
@@ -44,7 +44,7 @@ export default class TextMesh extends Mesh {
         if(!__diffuse) {
             __diffuse = new Texture(context, {
                 flipY: false,
-                anisotropy: 4,
+                anisotropy: 1,
                 min: context.gl.NEAREST,
                 mag: context.gl.NEAREST,
                 wrapS: context.gl.CLAMP_TO_EDGE,

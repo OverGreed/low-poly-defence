@@ -30,6 +30,7 @@
     "style-loader": "^0.13.1",
     "webgl-core": "file:///Users/greed/projects/webgl-core",
     "webpack": "^2.2.0",
+    "webpack-bundle-analyzer": "^2.8.2",
     "webpack-uglify-harmony": "^1.0.0"
   },
   "dependencies": {

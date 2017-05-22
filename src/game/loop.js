@@ -12,8 +12,8 @@ const loop = (time = 0) => {
     context.rc = 0;
     renderer
         .clear()
-        .render(game)
-        .render(ui);
+        .render(game, 'game')
+        .render(ui, 'default');
     _prev = time;
     window.requestAnimationFrame(loop);
 };

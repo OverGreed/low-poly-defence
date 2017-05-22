@@ -1,6 +1,5 @@
 import vec3 from 'gl-vec3/fromValues';
 import add from 'gl-vec3/add';
-import normalize from 'gl-vec3/normalize';
 import {Scene} from 'webgl-core/engine/scene/Scene';
 import {PerspectiveCamera} from 'webgl-core/engine/object/camera/PerspectiveCamera';
 import context from '../context';
@@ -11,22 +10,18 @@ import WallMesh from '../../mesh/WallMesh';
 import FloorMesh from '../../mesh/FloorMesh';
 import BridgeMesh from '../../mesh/BridgeMesh';
 import {Container} from 'webgl-core/engine/object/mesh/Container';
+import {FreeCamera} from 'webgl-core/engine/object/camera/controller/FreeCamera';
 
 import {AmbientLight} from 'webgl-core/engine/object/light/AmbientLight';
 import {DirectionalLight} from 'webgl-core/engine/object/light/DirectionalLight';
-import {SpotLight} from 'webgl-core/engine/object/light/SpotLight';
 import {toRad} from 'webgl-core/engine/helpers/math';
-
-import {Mesh} from 'webgl-core/engine/object/mesh/Mesh';
-import {Instance} from 'webgl-core/engine/object/mesh/Instance';
-import InstanceMaterial from '../../material/InstanceMaterial';
-import {Texture} from 'webgl-core/engine/material/texture/Texture';
 import Map from '../level/Map';
 
 class Game extends Scene {
     tick(diff){
+        ctrl.tick(diff);
         super.tick(diff);
-        this.meshes[0].rotate.y += diff * 0.0005;
+        //this.meshes[0].rotate.y += diff * 0.0005;
     }
 }
 
@@ -34,18 +29,20 @@ const center = vec3(0.0,0.0,0.0);
 const pos = vec3(3.5, 3.5, -3.5);
 const dir = vec3(-1.5, -1.5, 1.5);
 add(center, pos, dir);
-//add(this.camera.center, this.position, this.direction);
 const game = new Game(context,  {
     camera: new PerspectiveCamera(context, {
         perspective: true,
-        eye: vec3(-7.5, 7.5, 7.5),
-        //eye: vec3(3.5, 3.5, 0.0),
+        euler: true,
+        eye: vec3(-10.5, 10.5, 10.5),
         center: vec3(-1.5, -1.5, 0.0),
-        //eye: clone(pos),
-        //center: clone(center),
         fov: 45
     })
 });
+
+const ctrl = new FreeCamera(context, {
+    camera: game.camera
+});
+
 
 const map = new Map(context, game, {
     wall: WallMesh,
@@ -64,6 +61,7 @@ game.meshes.push(container);
 
 map.load([
     {entity: 'wall', type:'A'},
+
     {entity: 'wall', type:'B', position: [3,0,0]},
     {entity: 'wall', type:'C', position: [-1,0,0]},
     {entity: 'wall', type:'D', position: [-1,0,-5], rotate:[0,toRad(-90),0]},
@@ -81,9 +79,10 @@ map.load([
     {entity: 'lamp', type:'B', position: [14,0,-1]},
     {entity: 'lamp', type:'B', position: [14,0,-5]},
     {entity: 'lamp', type:'A', position: [-1,0,-6]},
+
     {entity: 'lamp', type:'A', position: [-1,0,0]},
 
-    //{entity: 'lamp', type:'B', position: [-1,0,-3]},
+    {entity: 'lamp', type:'B', position: [-1,0,-3]},
     {entity: 'lamp', type:'B', position: [5,0,-4]},
     {entity: 'lamp', type:'B', position: [5,0,-2]},
 
@@ -147,64 +146,18 @@ map.load([
     {entity: 'floor', type:'A', position: [14,0,-5]},
     {entity: 'floor', type:'A', position: [14,0,-3]},
     {entity: 'floor', type:'A', position: [14,0,-1]},
+
 ]);
 
-
 game.lights.push(new AmbientLight(context, {
-    color: vec3(0.6, 0.6, 0.6)
+    color: vec3(0.2, 0.2, 0.2)
 }));
 
 game.lights.push(new DirectionalLight(context, {
     shadow: true,
-    color: vec3(1.0, 1.0, 1.0),
+    color: vec3(0.3, 0.3, 0.3),
     direction: vec3(-1.5, -1.5, -1.5)
 }));
 
-/*
-game.lights.push(new PointLight(context, {
-    color: vec3(1.0, 1.0, 1.0),
-    position: vec3(1.5, 1.5, 0.0),
-    distance: 5
-}));
-*/
-
-const spot = new SpotLight(context, {
-    color: vec3(1.0, 1.0, 1.0),
-    position: pos,
-    direction: dir,
-    distance: 15,
-    angle: 70,
-    penumbra: 2,
-    shadow: true,
-    power: 2
-});
-
-normalize(spot.direction, spot.direction);
-
-//game.lights.push(spot);
-/*
-const test = new Mesh({
-    shadow: {
-        drop: true,
-        receive: true
-    },
-    instance: new Instance(context, {
-        component: 16,
-        data:[
-            {position: [0,0.5,0], rotate:[0,  toRad(-90), 0]},
-            {position: [2,0.5,0]},
-        ]
-    }),
-    material: new InstanceMaterial(context, {
-        textures: {
-            diffuse: new Texture(context, { flipY: 1, anisotropy: 16 }).load('textures/platform/diffuse.png'),
-            normal: new Texture(context, { flipY: 1, anisotropy: 16 }).load('textures/platform/normal.png'),
-            emit: new Texture(context, { flipY: 1, anisotropy: 16 }).load('textures/platform/emit.png')
-        }
-    }),
-    geometry: WallMesh.getGeometry(context, 'A')
-});
-game.meshes.push(test);
-*/
-game.meshes.push(new SkyCubeMesh(context));
+//game.meshes.push(new SkyCubeMesh(context));
 export default game;

@@ -39,6 +39,9 @@ export default class Map {
                     if(mesh.light) {
                         this._scene.lights.push(mesh.light);
                     }
+                    if(mesh.bound){
+                        this.container.children.add(mesh.bound);
+                    }
                     this.container.children.add(mesh);
                 });
             } else {

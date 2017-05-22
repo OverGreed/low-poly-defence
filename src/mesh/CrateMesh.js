@@ -4,6 +4,9 @@ import {SeparateGeometry} from 'webgl-core/engine/geometry/SeparateGeometry';
 import InstanceMaterial from '../material/InstanceMaterial';
 import {Texture} from 'webgl-core/engine/material/texture/Texture';
 import {prepareData} from 'webgl-core/engine/helpers/geometry';
+import {BlendingOneOne} from 'webgl-core/engine/material/blending/one-one';
+import {BlendingOne} from 'webgl-core/engine/material/blending/one';
+import {BlendingOpacity} from 'webgl-core/engine/material/blending/opacity';
 
 import crateA from './data/asset/create-a.json';
 import crateB from './data/asset/create-b.json';
@@ -52,8 +55,12 @@ export default class CrateMesh extends Mesh {
     }
 
     static getMaterial(context) {
+        const gl = context.gl;
         if(!__material) {
             __material = new InstanceMaterial(context, {
+                blending: (gl) => gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA),
+                face: gl.BACK,
+                opacity: 0.1,
                 textures: {
                     diffuse: new Texture(context, { flipY: 1 }).load('textures/asset/diffuse.png'),
                     emit: new Texture(context, { flipY: 1 }).load('textures/asset/emit.png'),

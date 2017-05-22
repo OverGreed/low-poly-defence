@@ -28,7 +28,7 @@ export default class LampMesh extends Mesh {
         type = LAMP_A,
         light = {
             power: 1,
-            distance: 6,
+            distance: 4,
             color: vec3(0.5882, 0.93333, 1.0)
         },
         ...options
@@ -45,6 +45,7 @@ export default class LampMesh extends Mesh {
         this.light = new PointLight(context, light);
         this.type = type;
         this.light.active = this.active;
+
     }
 
     get active() {
