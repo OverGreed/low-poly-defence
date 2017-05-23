@@ -50,6 +50,7 @@ const program = {
         {name: 'lightCount', type:'int', source: Uniform.scene('lights', 'length'), vertex: false }
     ],
     shader: {
+        version: '300 es',
         fragment: {
             precision: 'highp',
             source: fragment

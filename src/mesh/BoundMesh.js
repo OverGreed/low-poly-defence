@@ -1,6 +1,6 @@
 import {Mesh} from 'webgl-core/engine/object/mesh';
 import {SphereGeometry} from 'webgl-core/engine/geometry/SphereGeometry';
-import GeneralMaterial from '../material/GeneralMaterial';
+import {DeferredMaterial} from 'webgl-core/engine/material/deferred/Material';
 import {Texture} from 'webgl-core/engine/material/texture/Texture';
 
 let __geometry,
@@ -31,7 +31,7 @@ export default class BoundMesh extends Mesh {
 
     static getMaterial(context) {
         if(!__material) {
-            __material = new GeneralMaterial(context, {
+            __material = new DeferredMaterial(context, {
                 face: context.gl.FRONT,
                 textures: {
                     diffuse: new Texture(context, { flipY: 1, anisotropy: 16 }).load('textures/dummy/tile.jpg'),

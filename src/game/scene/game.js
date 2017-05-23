@@ -150,12 +150,12 @@ map.load([
 ]);
 
 game.lights.push(new AmbientLight(context, {
-    color: vec3(0.2, 0.2, 0.2)
+    color: vec3(0.1, 0.1, 0.1)
 }));
 
 game.lights.push(new DirectionalLight(context, {
     shadow: true,
-    color: vec3(0.3, 0.3, 0.3),
+    color: vec3(0.5, 0.5, 0.5),
     direction: vec3(-1.5, -1.5, -1.5)
 }));
 

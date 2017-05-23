@@ -1,7 +1,7 @@
 import {Mesh} from 'webgl-core/engine/object/mesh';
 import {SeparateGeometry} from 'webgl-core/engine/geometry/SeparateGeometry';
 
-import InstanceMaterial from '../material/InstanceMaterial';
+import {InstanceMaterial} from 'webgl-core/engine/material/deferred/InstanceMaterial';
 import {Texture} from 'webgl-core/engine/material/texture/Texture';
 import {prepareData} from 'webgl-core/engine/helpers/geometry';
 import {BlendingOneOne} from 'webgl-core/engine/material/blending/one-one';
@@ -60,7 +60,6 @@ export default class CrateMesh extends Mesh {
             __material = new InstanceMaterial(context, {
                 blending: (gl) => gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA),
                 face: gl.BACK,
-                opacity: 0.1,
                 textures: {
                     diffuse: new Texture(context, { flipY: 1 }).load('textures/asset/diffuse.png'),
                     emit: new Texture(context, { flipY: 1 }).load('textures/asset/emit.png'),

@@ -1,7 +1,7 @@
 import {Mesh} from 'webgl-core/engine/object/mesh';
 import {SeparateGeometry} from 'webgl-core/engine/geometry/SeparateGeometry';
 import {Texture} from 'webgl-core/engine/material/texture/Texture';
-import InstanceMaterial from '../material/InstanceMaterial';
+import {InstanceMaterial} from 'webgl-core/engine/material/deferred/InstanceMaterial';
 import {prepareData} from 'webgl-core/engine/helpers/geometry';
 
 import wallA from './data/platform/wall-a.json';

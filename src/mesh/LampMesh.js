@@ -1,7 +1,8 @@
 import {Mesh} from 'webgl-core/engine/object/mesh';
 import {SeparateGeometry} from 'webgl-core/engine/geometry/SeparateGeometry';
 import {Texture} from 'webgl-core/engine/material/texture/Texture';
-import GeneralMaterial from '../material/GeneralMaterial';
+
+import {DeferredMaterial} from 'webgl-core/engine/material/deferred/Material';
 import {prepareData} from 'webgl-core/engine/helpers/geometry';
 import {PointLight} from 'webgl-core/engine/object/light/PointLight';
 import vec3 from 'gl-vec3/fromValues';
@@ -67,7 +68,7 @@ export default class LampMesh extends Mesh {
 
     static getMaterial(context) {
         if(!__material) {
-            __material = new GeneralMaterial(context, {
+            __material = new DeferredMaterial(context, {
                 textures: {
                     diffuse: new Texture(context, { flipY: 1 }).load('textures/asset/diffuse.png'),
                     emit: new Texture(context, { flipY: 1 }).load('textures/asset/emit.png'),
